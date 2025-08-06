@@ -1,46 +1,157 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Panel - Estudiantes</title>
-  <link rel="stylesheet" href="styles.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Panel de Estudiantes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+
+    .top-bar button {
+      padding: 8px 15px;
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #34495e;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button.add-btn, button.upload-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button.add-btn:hover,
+    button.upload-btn:hover {
+      background-color: #2980b9;
+    }
+
+    .section-title {
+      margin-top: 30px;
+      font-size: 18px;
+      color: #2c3e50;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 5px;
+    }
+
+    .uploaded-files {
+      margin-top: 10px;
+      background: #ecf0f1;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+  </style>
 </head>
 <body>
+
   <div class="container">
-
     <h1>Panel de Estudiantes</h1>
-<button onclick="cerrarSesion()" class="cerrar-btn">Cerrar sesión</button>
-  
-    <section class="card">
-      <h2>Registrar estudiante</h2>
-      <input type="text" id="nombre" placeholder="Nombre del estudiante" />
-      <input type="email" id="correo" placeholder="Correo" />
-      <input type="text" id="clase" placeholder="Clase" />
-      <button onclick="agregarEstudiante()">Agregar</button>
-    </section>
 
-   
-    <section class="card">
-      <h2>Lista de estudiantes</h2>
-      <ul id="lista-estudiantes"></ul>
-    </section>
-
-    <section class="card">
-      <h2>Subir archivo</h2>
-      <label for="estudiante">Selecciona un estudiante:</label>
-      <select id="estudiante"></select><br /><br />
-
-      <input type="file" id="archivo" />
-      <button onclick="subirArchivo()">Subir</button>
-    </section>
-
-    <section class="card">
-      <h2>Archivos subidos</h2>
-      <ul id="lista-archivos"></ul>
-    </section>
-
+    <div class="top-bar">
+      <button onclick="cerrarSesion()">Cerrar sesión</button>
     </div>
-  <script src="js/dashboard.js"></script>
+
+    <!-- Registro de estudiante -->
+    <div>
+      <div class="section-title">Registrar estudiante</div>
+
+      <label for="nombre">Nombre del estudiante</label>
+      <input type="text" id="nombre" placeholder="Ej. Juan Pérez"/>
+
+      <label for="correo">Correo</label>
+      <input type="email" id="correo" placeholder="Ej. juan@email.com"/>
+
+      <label for="clase">Clase</label>
+      <input type="text" id="clase" placeholder="Ej. Matemáticas"/>
+
+      <button class="add-btn" onclick="agregarEstudiante()">Agregar</button>
+    </div>
+
+    <!-- Lista de estudiantes -->
+    <div>
+      <div class="section-title">Lista de estudiantes</div>
+      <select id="select-estudiante">
+        <option value="">Selecciona un estudiante</option>
+      </select>
+    </div>
+
+    <!-- Subida de archivos -->
+    <div>
+      <div class="section-title">Subir archivo</div>
+
+      <input type="file" id="archivo"/>
+      <button class="upload-btn" onclick="subirArchivo()">Subir</button>
+
+      <div class="section-title">Archivos subidos</div>
+      <div class="uploaded-files" id="archivos-subidos">
+        Sin archivos seleccionados
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function cerrarSesion() {
+      // Lógica de cierre de sesión
+    }
+
+    function agregarEstudiante() {
+      // Lógica para registrar estudiante
+    }
+
+    function subirArchivo() {
+      // Lógica para subir archivo
+    }
+  </script>
+
 </body>
 </html>
