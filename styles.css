@@ -1,4 +1,4 @@
-/* Reset */
+/* Reset básico */
 * {
   margin: 0;
   padding: 0;
@@ -6,90 +6,103 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to right, #f1f4f9, #dff1ff);
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #1a1c2c, #2c2f48);
+  color: #e0e0e0;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   min-height: 100vh;
   padding: 20px;
 }
 
 #auth-container {
-  background-color: #ffffff;
-  padding: 40px 30px;
-  border-radius: 14px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 35px 30px;
   width: 100%;
   max-width: 420px;
-  transition: all 0.3s ease-in-out;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.6s ease-in-out;
 }
 
 h1 {
-  font-size: 22px;
+  font-size: 24px;
   text-align: center;
+  color: #76ffe0;
   margin-bottom: 30px;
-  color: #2c3e50;
+  text-shadow: 0 0 8px rgba(118, 255, 224, 0.5);
 }
 
 h2 {
-  font-size: 18px;
   text-align: center;
+  font-size: 20px;
   margin-bottom: 20px;
-  color: #34495e;
+  color: #aefcf3;
 }
 
-input {
-  padding: 12px 16px;
-  font-size: 15px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  margin-bottom: 14px;
+input[type="email"],
+input[type="password"] {
   width: 100%;
-  transition: 0.3s;
+  padding: 12px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.07);
+  color: #ffffff;
+  outline: none;
+  transition: box-shadow 0.3s;
 }
 
 input:focus {
-  border-color: #2980b9;
-  outline: none;
-  background-color: #f5faff;
+  box-shadow: 0 0 0 2px #00bfa6;
+}
+
+input::placeholder {
+  color: #a1b5c6;
 }
 
 button {
+  width: 100%;
   padding: 12px;
-  background-color: #2980b9;
-  color: white;
+  font-size: 16px;
   font-weight: bold;
+  color: white;
+  background: linear-gradient(90deg, #00bfa6, #42d1b2);
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  width: 100%;
-  transition: background-color 0.3s ease;
-  font-size: 15px;
+  margin-top: 10px;
+  transition: transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 0 10px rgba(0, 191, 166, 0.3);
 }
 
 button:hover {
-  background-color: #1f5f8b;
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(0, 191, 166, 0.6);
 }
 
 p {
+  margin-top: 20px;
   text-align: center;
-  margin-top: 18px;
   font-size: 14px;
-  color: #666;
+  color: #cdd9e5;
 }
 
 p a {
-  color: #2980b9;
+  color: #00e1c0;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: bold;
 }
 
 p a:hover {
   text-decoration: underline;
 }
 
-/* Animación opcional para transiciones */
+/* Animación */
 @keyframes fadeIn {
   from {
     opacity: 0;
