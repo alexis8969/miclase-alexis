@@ -205,19 +205,22 @@ ul li {
   position: absolute;
   right: 30px;
   top: 30px;
-  padding: 10px 10px;
+  padding: 10px 20px;
   font-weight: bold;
   border-radius: 8px;
   border: none;
   cursor: pointer;
   color: white;
-  transition: transform 0.2s, box-shadow 0.3s;
+  transition: transform 0.2s, box-shadow 0.3s, width 0.3s;
+  width: auto; /* default width */
 }
 
 .cerrar-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 0 15px rgba(255, 75, 43, 0.5);
+  width: 50%; /* La mitad del ancho contenedor padre */
 }
+
 
 @media (max-width: 768px) {
   .container {
