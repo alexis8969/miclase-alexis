@@ -1,46 +1,41 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Panel - Estudiantes</title>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
   <link rel="stylesheet" href="styles.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <div class="container">
+  <h1>Bienvenido al Panel</h1>
+  <div id="user-info"></div>
+  <button onclick="logout()">Cerrar sesión</button>
 
-    <h1>Panel de Estudiantes</h1>
-<button onclick="cerrarSesion()" class="cerrar-btn">Cerrar sesión</button>
-  
-    <section class="card">
-      <h2>Registrar estudiante</h2>
-      <input type="text" id="nombre" placeholder="Nombre del estudiante" />
-      <input type="email" id="correo" placeholder="Correo" />
-      <input type="text" id="clase" placeholder="Clase" />
-      <button onclick="agregarEstudiante()">Agregar</button>
-    </section>
+  <!-- Supabase y lógica -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const client = supabase.createClient(
+      'https://zyzoclgkssgxbvzfhcqq.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5em9jbGdrc3NneGJ2emZoY3FxIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTExMTc3NzcsImV4cCI6MjAwNjY5Mzc3N30.5zCehePXu9I3pZKUQWjUykEoD2XzU9OZxRU8Ln9C0js'
+    );
 
-   
-    <section class="card">
-      <h2>Lista de estudiantes</h2>
-      <ul id="lista-estudiantes"></ul>
-    </section>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const { data, error } = await client.auth.getUser();
 
-    <section class="card">
-      <h2>Subir archivo</h2>
-      <label for="estudiante">Selecciona un estudiante:</label>
-      <select id="estudiante"></select><br /><br />
+      if (error || !data.user) {
+        alert("No has iniciado sesión.");
+        window.location.href = "index.html";
+        return;
+      }
 
-      <input type="file" id="archivo" />
-      <button onclick="subirArchivo()">Subir</button>
-    </section>
+      document.getElementById("user-info").textContent =
+        "Correo: " + data.user.email;
+    });
 
-    <section class="card">
-      <h2>Archivos subidos</h2>
-      <ul id="lista-archivos"></ul>
-    </section>
-
-    </div>
-  <script src="js/dashboard.js"></script>
+    async function logout() {
+      await client.auth.signOut();
+      alert("Sesión cerrada");
+      window.location.href = "index.html";
+    }
+  </script>
 </body>
 </html>
