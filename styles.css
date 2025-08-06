@@ -6,110 +6,118 @@
 }
 
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #1a1c2c, #2c2f48);
-  color: #e0e0e0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f5f7fa;
+  color: #333;
   padding: 20px;
 }
 
-#auth-container {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 35px 30px;
-  width: 100%;
-  max-width: 420px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  animation: fadeIn 0.6s ease-in-out;
+/* Contenedor principal */
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* Títulos */
 h1 {
-  font-size: 24px;
   text-align: center;
-  color: #76ffe0;
   margin-bottom: 30px;
-  text-shadow: 0 0 8px rgba(118, 255, 224, 0.5);
+  font-size: 2rem;
+  color: #2c3e50;
 }
 
 h2 {
-  text-align: center;
-  font-size: 20px;
-  margin-bottom: 20px;
-  color: #aefcf3;
+  margin-bottom: 10px;
+  color: #34495e;
 }
 
-input[type="email"],
-input[type="password"] {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  font-size: 16px;
-  border-radius: 10px;
-  border: none;
-  background-color: rgba(255, 255, 255, 0.07);
-  color: #ffffff;
-  outline: none;
-  transition: box-shadow 0.3s;
-}
-
-input:focus {
-  box-shadow: 0 0 0 2px #00bfa6;
-}
-
-input::placeholder {
-  color: #a1b5c6;
-}
-
-button {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  font-weight: bold;
+/* Botón de cerrar sesión */
+.cerrar-btn {
+  float: right;
+  margin-top: -60px;
+  padding: 10px 20px;
+  background-color: #e74c3c;
   color: white;
-  background: linear-gradient(90deg, #00bfa6, #42d1b2);
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
-  margin-top: 10px;
-  transition: transform 0.2s, box-shadow 0.3s;
-  box-shadow: 0 0 10px rgba(0, 191, 166, 0.3);
+  transition: background 0.3s;
+}
+
+.cerrar-btn:hover {
+  background-color: #c0392b;
+}
+
+/* Tarjetas (secciones) */
+.card {
+  background-color: #ecf0f1;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* Inputs y select */
+input[type="text"],
+input[type="email"],
+input[type="file"],
+select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #bdc3c7;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+/* Botones */
+button {
+  padding: 12px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
 button:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 20px rgba(0, 191, 166, 0.6);
+  background-color: #2980b9;
 }
 
-p {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 14px;
-  color: #cdd9e5;
+/* Lista de estudiantes y archivos */
+ul {
+  list-style-type: none;
+  padding-left: 0;
 }
 
-p a {
-  color: #00e1c0;
-  text-decoration: none;
-  font-weight: bold;
+ul li {
+  background-color: #fff;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  border: 1px solid #dcdde1;
 }
 
-p a:hover {
-  text-decoration: underline;
-}
-
-/* Animación */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+/* Responsive */
+@media screen and (max-width: 600px) {
+  .container {
+    padding: 15px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .cerrar-btn {
+    float: none;
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
   }
 }
