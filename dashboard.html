@@ -3,14 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <title>Dashboard</title>
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 40px;
+      color: #333;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 400px;
+      margin: 40px auto;
+      padding: 30px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    input, button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      font-size: 16px;
+    }
+
+    #logoutBtn {
+      background-color: #c0392b;
+      color: white;
+      border: none;
+      margin-top: 30px;
+    }
+
+    #user-info {
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <h1>Bienvenido al Panel</h1>
-  <div id="user-info"></div>
-  <button onclick="logout()">Cerrar sesión</button>
 
-  <!-- Supabase y lógica -->
+  <h1>Bienvenido al Panel</h1>
+
+  <div class="container" id="dashboard-container" style="display: none;">
+    <div id="user-info"></div>
+
+    <!-- Puedes colocar aquí tu formulario o interfaz del dashboard -->
+    <input type="text" placeholder="Dato 1">
+    <input type="text" placeholder="Dato 2">
+    <button>Guardar</button>
+
+    <button id="logoutBtn" onclick="logout()">Cerrar sesión</button>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const client = supabase.createClient(
@@ -28,7 +81,10 @@
       }
 
       document.getElementById("user-info").textContent =
-        "Correo: " + data.user.email;
+        "Sesión iniciada como: " + data.user.email;
+
+      // Mostrar el contenido del dashboard
+      document.getElementById("dashboard-container").style.display = "block";
     });
 
     async function logout() {
