@@ -4,12 +4,14 @@
   <meta charset="UTF-8" />
   <title>Mi Clase en la Nube - Login</title>
   <link rel="stylesheet" href="styles.css" />
- </head>
+</head>
 <body>
-  <h1>Bienvenida a Mi Clase en la Nubecita</h1>
 
   <div id="auth-container">
-  
+
+    <!-- TÍTULO CENTRADO DENTRO DEL CONTENEDOR -->
+    <h1>Bienvenida a Mi Clase en la Nubecita</h1>
+
     <div id="login-form">
       <h2>Iniciar Sesión</h2>
       <input type="email" id="email" placeholder="Correo" />
@@ -25,7 +27,9 @@
       <button onclick="register()">Crear cuenta</button>
       <p>¿Ya tienes cuenta? <a href="#" onclick="toggleForms()">Inicia sesión aquí</a></p>
     </div>
+
   </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/auth.js"></script>
 </body>
