@@ -65,12 +65,12 @@ async function cargarEstudiantes() {
     estudiantesData.forEach((est) => {
         const item = document.createElement("li");
         item.innerHTML = `
-            <span>${est.nombre} (${est.clase})</span>
-            <div class="lista-botones">
-                <button class="btn-editar" onclick="abrirModalEdicion('${est.id}')">Editar</button>
-                <button class="btn-eliminar" onclick="eliminarEstudiante('${est.id}')">Eliminar</button>
-            </div>
-        `;
+            <span>${est.nombre} (${est.clase})</span>
+            <div class="lista-botones">
+                <button class="btn-editar" onclick="abrirModalEdicion('${est.id}')">Editar</button>
+                <button class="btn-eliminar" onclick="eliminarEstudiante('${est.id}')">Eliminar</button>
+            </div>
+        `;
         lista.appendChild(item);
 
         const opcion = document.createElement("option");
@@ -98,16 +98,16 @@ function cerrarModal() {
     document.getElementById("modal-editar").style.display = "none";
 }
 
-window.onclick = function (event) {
+window.onclick = function(event) {
     const modal = document.getElementById("modal-editar");
-    if (event.target == modal) {
+    if (event.target === modal) {
         modal.style.display = "none";
     }
 }
 
 // ----------------- GUARDAR EDICIÓN -----------------
-async function guardarEdicion(event) {
-    event.preventDefault(); // Evita que la página se recargue
+document.getElementById("form-editar").addEventListener("submit", async function(event) {
+    event.preventDefault();
 
     const id = document.getElementById("edit-id").value;
     const nuevoNombre = document.getElementById("edit-nombre").value.trim();
@@ -131,7 +131,7 @@ async function guardarEdicion(event) {
         cerrarModal();
         await cargarEstudiantes();
     }
-}
+});
 
 // ----------------- ELIMINAR ESTUDIANTE -----------------
 async function eliminarEstudiante(id) {
@@ -147,7 +147,7 @@ async function eliminarEstudiante(id) {
     } else {
         alert("Estudiante eliminado");
         await cargarEstudiantes();
-        await listarArchivos(); // Recargar la lista de archivos por si hay cambios
+        await listarArchivos();
     }
 }
 
@@ -197,10 +197,15 @@ async function listarArchivos() {
 
     const { data, error } = await client.storage
         .from("tareas")
-        .list(`${user.id}`, { limit: 100 }); // Aumenta el límite si hay muchos archivos
+        .list(`${user.id}`, { limit: 100 });
 
     if (error) {
         lista.innerHTML = "<li>Error al listar archivos</li>";
+        return;
+    }
+
+    if (!data.length) {
+        lista.innerHTML = "<li>No hay archivos subidos.</li>";
         return;
     }
 
@@ -223,12 +228,12 @@ async function listarArchivos() {
                 const item = document.createElement("li");
 
                 item.innerHTML = `
-                    <span><strong>${nombreEstudiante}:</strong> ${archivo.name}</span>
-                    <div class="lista-botones">
-                        <a href="${publicUrl}" target="_blank" class="btn-ver">Ver</a>
-                        <button class="btn-eliminar" onclick="eliminarArchivo('${user.id}/${estudianteFolder.id}/${archivo.name}')">Eliminar</button>
-                    </div>
-                `;
+                    <span><strong>${nombreEstudiante}:</strong> ${archivo.name}</span>
+                    <div class="lista-botones">
+                        <a href="${publicUrl}" target="_blank" class="btn-ver">Ver</a>
+                        <button class="btn-eliminar" onclick="eliminarArchivo('${user.id}/${estudianteFolder.id}/${archivo.name}')">Eliminar</button>
+                    </div>
+                `;
                 lista.appendChild(item);
             });
         }
@@ -246,7 +251,6 @@ async function eliminarArchivo(nombreArchivo) {
         await listarArchivos();
     }
 }
-
 
 // ----------------- CERRAR SESIÓN -----------------
 async function cerrarSesion() {
