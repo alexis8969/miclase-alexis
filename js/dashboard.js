@@ -2,6 +2,7 @@ const SUPABASE_URL = "https://dsffclttfnbnxonyfmhw.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzZmZjbHR0Zm5ibnhvbnlmbWh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MDQyNzIsImV4cCI6MjA3MDA4MDI3Mn0.SNM7Rph0yb8BdTDy8D2urNiYP4Z5Zu9vjXszLXFznh8";
 const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// Arreglo para guardar los datos de los estudiantes y evitar errores con comillas.
 let estudiantesData = []; 
 
 // ----------------- AGREGAR ESTUDIANTE -----------------
@@ -47,7 +48,9 @@ async function cargarEstudiantes() {
         return;
     }
 
-    estudiantesData = data;
+    // Guardamos los datos en el arreglo global
+    estudiantesData = data; 
+
     const lista = document.getElementById("lista-estudiantes");
     lista.innerHTML = "";
     
@@ -67,12 +70,15 @@ cargarEstudiantes();
 
 // ----------------- MODAL DE EDICIÓN -----------------
 function abrirModalEdicion(id) {
+    // Buscamos el estudiante en el arreglo usando su ID
     const estudiante = estudiantesData.find(est => est.id === id);
+
     if (!estudiante) {
         alert("Estudiante no encontrado.");
         return;
     }
     
+    // Llenamos el modal con los datos del estudiante
     document.getElementById("edit-id").value = estudiante.id;
     document.getElementById("edit-nombre").value = estudiante.nombre;
     document.getElementById("edit-correo").value = estudiante.correo;
