@@ -233,3 +233,29 @@ ul li {
     padding: 8px 14px;
   }
 }
+
+.btn-editar {
+  background: linear-gradient(90deg, #4cafef, #2196f3);
+  border: none;
+  padding: 6px 10px;
+  margin-left: 10px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-eliminar {
+  background: linear-gradient(90deg, #ff416c, #ff4b2b);
+  border: none;
+  padding: 6px 10px;
+  margin-left: 5px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-editar:hover,
+.btn-eliminar:hover {
+  opacity: 0.8;
+}
+
