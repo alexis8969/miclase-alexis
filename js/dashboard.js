@@ -72,7 +72,7 @@ async function cargarEstudiantes() {
     });
 }
 
-// ----------------- MODAL DE EDICIÓN -----------------
+// ----------------- MODAL DE EDICIÓn -----------------
 function abrirModalEdicion(id) {
     console.log("ID recibido en abrirModalEdicion:", id);
     console.log("Lista actual de estudiantes:", estudiantesData);
