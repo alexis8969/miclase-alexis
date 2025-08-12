@@ -44,7 +44,8 @@ h2 {
 }
 
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+input[type="text"] {
   width: 100%;
   padding: 12px;
   margin-bottom: 15px;
@@ -108,11 +109,13 @@ p a:hover {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 .container {
   max-width: 900px;
   width: 100%;
@@ -242,37 +245,41 @@ ul li {
   gap: 5px;
 }
 
-.btn-editar, .btn-eliminar {
+.btn-editar,
+.btn-eliminar,
+.btn-ver {
   padding: 6px 12px;
   font-size: 14px;
   width: auto;
   margin-left: 0;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 .btn-editar {
   background: linear-gradient(90deg, #4cafef, #2196f3);
-  border: none;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
 }
 
 .btn-eliminar {
   background: linear-gradient(90deg, #ff416c, #ff4b2b);
-  border: none;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
+}
+
+.btn-ver {
+  background: linear-gradient(90deg, #8bc34a, #689f38);
 }
 
 .btn-editar:hover,
-.btn-eliminar:hover {
+.btn-eliminar:hover,
+.btn-ver:hover {
   opacity: 0.8;
 }
 
 /* Estilos para el modal */
 .modal {
-  display: none; /* Oculto por defecto */
+  display: none;
+  /* Oculto por defecto */
   position: fixed;
   z-index: 1;
   left: 0;
