@@ -74,16 +74,21 @@ async function cargarEstudiantes() {
 
 // ----------------- MODAL DE EDICIÓN -----------------
 function abrirModalEdicion(id) {
+    console.log("ID recibido en abrirModalEdicion:", id);
+    console.log("Lista actual de estudiantes:", estudiantesData);
+
     if (!estudiantesData.length) {
         alert("La lista de estudiantes no está cargada todavía.");
         return;
     }
 
-    const estudiante = estudiantesData.find(est => est.id == id);
-    console.log("Buscando estudiante con ID:", id, "Resultado:", estudiante);
+    // Comparación segura entre strings
+    const estudiante = estudiantesData.find(est => String(est.id) === String(id));
+
+    console.log("Resultado de búsqueda:", estudiante);
 
     if (!estudiante) {
-        alert(`No se encontró el estudiante con id: ${id}`);
+        alert(`Estudiante no encontrado. ID buscado: ${id}`);
         return;
     }
 
