@@ -1,15 +1,14 @@
 const SUPABASE_URL = "https://dsffclttfnbnxonyfmhw.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzZmZjbHR0Zm5ibnhvbnlmbWh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MDQyNzIsImV4cCI6MjA3MDA4MDI3Mn0.SNM7Rph0yb8BdTDy8D2urNiYP4Z5Zu9vjXszLXFznh8";                                                                                                                                                                                                                                                          const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzZmZjbHR0Zm5ibnhvbnlmbWh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MDQyNzIsImV4cCI6MjA3MDA4MDI3Mn0.SNM7Rph0yb8BdTDy8D2urNiYP4Z5Zu9vjXszLXFznh8";                                                                                                                                                                                                                                                          
+const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// ----------------- AGREGAR ESTUDIANTE -----------------
 async function agregarEstudiante() {
   const nombre = document.getElementById("nombre").value;
   const correo = document.getElementById("correo").value;
   const clase = document.getElementById("clase").value;
 
-  const {
-    data: { user },
-    error: userError,
-  } = await client.auth.getUser();
+  const { data: { user }, error: userError } = await client.auth.getUser();
 
   if (userError || !user) {
     alert("No estás autenticado.");
@@ -27,13 +26,17 @@ async function agregarEstudiante() {
     alert("Error al agregar: " + error.message);
   } else {
     alert("Estudiante agregado");
+    document.getElementById("nombre").value = "";
+    document.getElementById("correo").value = "";
+    document.getElementById("clase").value = "";
     cargarEstudiantes();
   }
 }
 
+// ----------------- CARGAR ESTUDIANTES -----------------
 async function cargarEstudiantes() {
   const { data, error } = await client
-    .from("estudiantes")  //Nombre de BD
+    .from("estudiantes")
     .select("*")
     .order("created_at", { ascending: false });
 
@@ -44,15 +47,62 @@ async function cargarEstudiantes() {
 
   const lista = document.getElementById("lista-estudiantes");
   lista.innerHTML = "";
+  
   data.forEach((est) => {
     const item = document.createElement("li");
-    item.textContent = `${est.nombre} (${est.clase})`;
+    item.innerHTML = `
+      <span>${est.nombre} (${est.clase})</span>
+      <button class="btn-editar" onclick="editarEstudiante('${est.id}', '${est.nombre}', '${est.correo}', '${est.clase}')">Editar</button>
+      <button class="btn-eliminar" onclick="eliminarEstudiante('${est.id}')">Eliminar</button>
+    `;
     lista.appendChild(item);
   });
 }
 
 cargarEstudiantes();
 
+// ----------------- EDITAR ESTUDIANTE -----------------
+async function editarEstudiante(id, nombreActual, correoActual, claseActual) {
+  const nuevoNombre = prompt("Nuevo nombre:", nombreActual);
+  const nuevoCorreo = prompt("Nuevo correo:", correoActual);
+  const nuevaClase = prompt("Nueva clase:", claseActual);
+
+  if (!nuevoNombre || !nuevoCorreo || !nuevaClase) {
+    alert("Todos los campos son obligatorios.");
+    return;
+  }
+
+  const { error } = await client
+    .from("estudiantes")
+    .update({ nombre: nuevoNombre, correo: nuevoCorreo, clase: nuevaClase })
+    .eq("id", id);
+
+  if (error) {
+    alert("Error al editar: " + error.message);
+  } else {
+    alert("Estudiante actualizado");
+    cargarEstudiantes();
+  }
+}
+
+// ----------------- ELIMINAR ESTUDIANTE -----------------
+async function eliminarEstudiante(id) {
+  if (!confirm("¿Seguro que quieres eliminar este estudiante?")) return;
+
+  const { error } = await client
+    .from("estudiantes")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    alert("Error al eliminar: " + error.message);
+  } else {
+    alert("Estudiante eliminado");
+    cargarEstudiantes();
+  }
+}
+
+// ----------------- SUBIR ARCHIVO -----------------
 async function subirArchivo() {
   const archivoInput = document.getElementById("archivo");
   const archivo = archivoInput.files[0];
@@ -62,19 +112,15 @@ async function subirArchivo() {
     return;
   }
 
-  const {
-    data: { user },
-    error: userError,
-  } = await client.auth.getUser();
-
+  const { data: { user }, error: userError } = await client.auth.getUser();
   if (userError || !user) {
     alert("Sesión no válida.");
     return;
   }
 
   const nombreRuta = `${user.id}/${archivo.name}`; 
-  const { data, error } = await client.storage
-    .from("tareas") //Nombre del bucket
+  const { error } = await client.storage
+    .from("tareas")
     .upload(nombreRuta, archivo, {
       cacheControl: "3600",
       upsert: false,
@@ -88,12 +134,9 @@ async function subirArchivo() {
   }
 }
 
+// ----------------- LISTAR ARCHIVOS -----------------
 async function listarArchivos() {
-  const {
-    data: { user },
-    error: userError,
-  } = await client.auth.getUser();
-
+  const { data: { user }, error: userError } = await client.auth.getUser();
   if (userError || !user) {
     alert("Sesión no válida.");
     return;
@@ -112,17 +155,11 @@ async function listarArchivos() {
   }
 
   data.forEach(async (archivo) => {
-    const { data: signedUrlData, error: signedUrlError } = await client.storage
+    const { data: signedUrlData } = await client.storage
       .from("tareas")
       .createSignedUrl(`${user.id}/${archivo.name}`, 60); 
 
-    if (signedUrlError) {
-      console.error("Error al generar URL firmada:", signedUrlError.message);
-      return;
-    }
-
     const publicUrl = signedUrlData.signedUrl;
-
     const item = document.createElement("li");
 
     const esImagen = archivo.name.match(/\.(jpg|jpeg|png|gif)$/i);
@@ -149,6 +186,7 @@ async function listarArchivos() {
 }
 listarArchivos();
 
+// ----------------- CERRAR SESIÓN -----------------
 async function cerrarSesion() {
   const { error } = await client.auth.signOut();
 
