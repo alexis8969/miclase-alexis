@@ -2,7 +2,7 @@ const SUPABASE_URL = "https://dsffclttfnbnxonyfmhw.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzZmZjbHR0Zm5ibnhvbnlmbWh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MDQyNzIsImV4cCI6MjA3MDA4MDI3Mn0.SNM7Rph0yb8BdTDy8D2urNiYP4Z5Zu9vjXszLXFznh8";
 const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-let estudiantesData = []; // Variable global para guardar los estudiantes
+let estudiantesData = []; 
 
 // ----------------- AGREGAR ESTUDIANTE -----------------
 async function agregarEstudiante() {
@@ -47,7 +47,7 @@ async function cargarEstudiantes() {
         return;
     }
 
-    estudiantesData = data; // Almacenamos los datos aquí
+    estudiantesData = data;
     const lista = document.getElementById("lista-estudiantes");
     lista.innerHTML = "";
     
@@ -103,7 +103,6 @@ async function guardarEdicion() {
         return;
     }
 
-    // Aquí se envía la solicitud de actualización a Supabase
     const { error } = await client
         .from("estudiantes")
         .update({ nombre: nuevoNombre, correo: nuevoCorreo, clase: nuevaClase })
