@@ -2,7 +2,7 @@ const SUPABASE_URL = "https://dsffclttfnbnxonyfmhw.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzZmZjbHR0Zm5ibnhvbnlmbWh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MDQyNzIsImV4cCI6MjA3MDA4MDI3Mn0.SNM7Rph0yb8BdTDy8D2urNiYP4Z5Zu9vjXszLXFznh8";
 const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-let estudiantesData = []; 
+let estudiantesData = []; // Aquí guardamos la lista cargada
 
 // ----------------- AGREGAR ESTUDIANTE -----------------
 async function agregarEstudiante() {
@@ -35,12 +35,13 @@ async function agregarEstudiante() {
         document.getElementById("nombre").value = "";
         document.getElementById("correo").value = "";
         document.getElementById("clase").value = "";
-        cargarEstudiantes();
+        await cargarEstudiantes();
     }
 }
 
 // ----------------- CARGAR ESTUDIANTES -----------------
 async function cargarEstudiantes() {
+    console.log("Cargando estudiantes...");
     const { data, error } = await client
         .from("estudiantes")
         .select("*")
@@ -51,12 +52,14 @@ async function cargarEstudiantes() {
         return;
     }
 
-    estudiantesData = data; 
+    estudiantesData = data || [];
+    console.log("Estudiantes cargados:", estudiantesData);
 
     const lista = document.getElementById("lista-estudiantes");
     lista.innerHTML = "";
-    
-    data.forEach((est) => {
+
+    estudiantesData.forEach((est) => {
+        console.log("Renderizando estudiante:", est.id, est.nombre);
         const item = document.createElement("li");
         item.innerHTML = `
             <span>${est.nombre} (${est.clase})</span>
@@ -68,16 +71,22 @@ async function cargarEstudiantes() {
         lista.appendChild(item);
     });
 }
-cargarEstudiantes();
 
 // ----------------- MODAL DE EDICIÓN -----------------
 function abrirModalEdicion(id) {
-    const estudiante = estudiantesData.find(est => est.id == id); // comparación flexible
-    if (!estudiante) {
-        alert("Estudiante no encontrado.");
+    if (!estudiantesData.length) {
+        alert("La lista de estudiantes no está cargada todavía.");
         return;
     }
-    
+
+    const estudiante = estudiantesData.find(est => est.id == id);
+    console.log("Buscando estudiante con ID:", id, "Resultado:", estudiante);
+
+    if (!estudiante) {
+        alert(`No se encontró el estudiante con id: ${id}`);
+        return;
+    }
+
     document.getElementById("edit-id").value = estudiante.id;
     document.getElementById("edit-nombre").value = estudiante.nombre;
     document.getElementById("edit-correo").value = estudiante.correo;
@@ -120,7 +129,7 @@ async function guardarEdicion(event) {
     } else {
         alert("Estudiante actualizado");
         cerrarModal();
-        cargarEstudiantes();
+        await cargarEstudiantes();
     }
 }
 
@@ -137,7 +146,7 @@ async function eliminarEstudiante(id) {
         alert("Error al eliminar: " + error.message);
     } else {
         alert("Estudiante eliminado");
-        cargarEstudiantes();
+        await cargarEstudiantes();
     }
 }
 
@@ -152,3 +161,6 @@ async function cerrarSesion() {
         window.location.href = "index.html";
     }
 }
+
+// Ejecutar carga inicial al abrir la página
+document.addEventListener("DOMContentLoaded", cargarEstudiantes);
