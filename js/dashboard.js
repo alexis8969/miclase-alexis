@@ -1,5 +1,5 @@
 const SUPABASE_URL = "https://dsffclttfnbnxonyfmhw.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzZmZjbHR0Zm5ibnhvbnlmbWh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MDQyNzIsImV4cCI6MjA3MDA4MDI3Mn0.SNM7Rph0yb8BdTDy8D2urNiYP4Z5Zu9vjXszLXFznh8";                                                                                                                                                                                                                                                          
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzZmZjbHR0Zm5ibnhvbnlmbWh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MDQyNzIsImV4cCI6MjA3MDA4MDI3Mn0.SNM7Rph0yb8BdTDy8D2urNiYP4Z5Zu9vjXszLXFznh8";
 const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ----------------- AGREGAR ESTUDIANTE -----------------
@@ -47,25 +47,48 @@ async function cargarEstudiantes() {
 
   const lista = document.getElementById("lista-estudiantes");
   lista.innerHTML = "";
-  
+
   data.forEach((est) => {
     const item = document.createElement("li");
     item.innerHTML = `
-      <span>${est.nombre} (${est.clase})</span>
-      <button class="btn-editar" onclick="editarEstudiante('${est.id}', '${est.nombre}', '${est.correo}', '${est.clase}')">Editar</button>
-      <button class="btn-eliminar" onclick="eliminarEstudiante('${est.id}')">Eliminar</button>
-    `;
+      <span>${est.nombre} (${est.clase})</span>
+      <div class="lista-botones">
+        <button class="btn-editar" onclick="abrirModalEdicion('${est.id}', '${est.nombre}', '${est.correo}', '${est.clase}')">Editar</button>
+        <button class="btn-eliminar" onclick="eliminarEstudiante('${est.id}')">Eliminar</button>
+      </div>
+    `;
     lista.appendChild(item);
   });
 }
 
 cargarEstudiantes();
 
-// ----------------- EDITAR ESTUDIANTE -----------------
-async function editarEstudiante(id, nombreActual, correoActual, claseActual) {
-  const nuevoNombre = prompt("Nuevo nombre:", nombreActual);
-  const nuevoCorreo = prompt("Nuevo correo:", correoActual);
-  const nuevaClase = prompt("Nueva clase:", claseActual);
+// ----------------- MODAL DE EDICIÓN -----------------
+function abrirModalEdicion(id, nombre, correo, clase) {
+  document.getElementById("edit-id").value = id;
+  document.getElementById("edit-nombre").value = nombre;
+  document.getElementById("edit-correo").value = correo;
+  document.getElementById("edit-clase").value = clase;
+  document.getElementById("modal-editar").style.display = "block";
+}
+
+function cerrarModal() {
+  document.getElementById("modal-editar").style.display = "none";
+}
+
+window.onclick = function (event) {
+  const modal = document.getElementById("modal-editar");
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+// ----------------- GUARDAR EDICIÓN -----------------
+async function guardarEdicion() {
+  const id = document.getElementById("edit-id").value;
+  const nuevoNombre = document.getElementById("edit-nombre").value;
+  const nuevoCorreo = document.getElementById("edit-correo").value;
+  const nuevaClase = document.getElementById("edit-clase").value;
 
   if (!nuevoNombre || !nuevoCorreo || !nuevaClase) {
     alert("Todos los campos son obligatorios.");
@@ -81,9 +104,11 @@ async function editarEstudiante(id, nombreActual, correoActual, claseActual) {
     alert("Error al editar: " + error.message);
   } else {
     alert("Estudiante actualizado");
+    cerrarModal();
     cargarEstudiantes();
   }
 }
+
 
 // ----------------- ELIMINAR ESTUDIANTE -----------------
 async function eliminarEstudiante(id) {
@@ -118,7 +143,7 @@ async function subirArchivo() {
     return;
   }
 
-  const nombreRuta = `${user.id}/${archivo.name}`; 
+  const nombreRuta = `${user.id}/${archivo.name}`;
   const { error } = await client.storage
     .from("tareas")
     .upload(nombreRuta, archivo, {
@@ -130,7 +155,7 @@ async function subirArchivo() {
     alert("Error al subir: " + error.message);
   } else {
     alert("Archivo subido correctamente.");
-    listarArchivos(); 
+    listarArchivos();
   }
 }
 
@@ -157,7 +182,7 @@ async function listarArchivos() {
   data.forEach(async (archivo) => {
     const { data: signedUrlData } = await client.storage
       .from("tareas")
-      .createSignedUrl(`${user.id}/${archivo.name}`, 60); 
+      .createSignedUrl(`${user.id}/${archivo.name}`, 60);
 
     const publicUrl = signedUrlData.signedUrl;
     const item = document.createElement("li");
@@ -167,16 +192,16 @@ async function listarArchivos() {
 
     if (esImagen) {
       item.innerHTML = `
-        <strong>${archivo.name}</strong><br>
-        <a href="${publicUrl}" target="_blank">
-          <img src="${publicUrl}" width="150" style="border:1px solid #ccc; margin:5px;" />
-        </a>
-      `;
+        <strong>${archivo.name}</strong><br>
+        <a href="${publicUrl}" target="_blank">
+          <img src="${publicUrl}" width="150" style="border:1px solid #ccc; margin:5px;" />
+        </a>
+      `;
     } else if (esPDF) {
       item.innerHTML = `
-        <strong>${archivo.name}</strong><br>
-        <a href="${publicUrl}" target="_blank">Ver PDF</a>
-      `;
+        <strong>${archivo.name}</strong><br>
+        <a href="${publicUrl}" target="_blank">Ver PDF</a>
+      `;
     } else {
       item.innerHTML = `<a href="${publicUrl}" target="_blank">${archivo.name}</a>`;
     }
