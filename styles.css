@@ -108,7 +108,6 @@ p a:hover {
     opacity: 0;
     transform: translateY(20px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -205,6 +204,7 @@ ul li {
   align-items: center;
 }
 
+/* Ajustes al botón de "Cerrar sesión" */
 .cerrar-btn {
   background: linear-gradient(90deg, #ff416c, #ff4b2b);
   position: absolute;
@@ -217,6 +217,7 @@ ul li {
   cursor: pointer;
   color: white;
   transition: transform 0.2s, box-shadow 0.3s;
+  width: auto;
 }
 
 .cerrar-btn:hover {
@@ -242,8 +243,7 @@ ul li {
   gap: 5px;
 }
 
-.btn-editar,
-.btn-eliminar {
+.btn-editar, .btn-eliminar {
   padding: 6px 12px;
   font-size: 14px;
   width: auto;
@@ -271,13 +271,11 @@ ul li {
   opacity: 0.8;
 }
 
-
 /* Estilos para el modal */
 .modal {
-  display: none;
-  /* Oculto por defecto */
-  position: fixed;
-  z-index: 1;
+  display: none; /* Oculto por defecto */
+  position: fixed; 
+  z-index: 1; 
   left: 0;
   top: 0;
   width: 100%;
